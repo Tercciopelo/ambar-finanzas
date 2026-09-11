@@ -49,7 +49,7 @@ class FinanceRepository(
     suspend fun addTransaction(transaction: TransactionEntity): Long =
         transactionDao.insert(transaction)
 
-    suspend fun addQuickExpense(amount: Long, description: String, categoryId: Long? = null): Long {
+    suspend fun addQuickExpense(amount: Long, description: String, categoryId: Long? = null, note: String = "", isRecurring: Boolean = false, isSubscription: Boolean = false): Long {
         val tx = TransactionEntity(
             uuid = UUID.randomUUID().toString(),
             type = "EXPENSE",
@@ -63,7 +63,7 @@ class FinanceRepository(
         return transactionDao.insert(tx)
     }
 
-    suspend fun addQuickIncome(amount: Long, description: String, categoryId: Long? = null): Long {
+    suspend fun addQuickIncome(amount: Long, description: String, categoryId: Long? = null, note: String = "", isRecurring: Boolean = false): Long {
         val tx = TransactionEntity(
             uuid = UUID.randomUUID().toString(),
             type = "INCOME",
@@ -123,6 +123,8 @@ class FinanceRepository(
     fun getSubscriptions(): Flow<List<RecurringRuleEntity>> =
         recurringRuleDao.getSubscriptions()
 
+    suspend fun deleteRecurringRule(rule: RecurringRuleEntity) = recurringRuleDao.delete(rule)
+
     suspend fun addRecurringRule(rule: RecurringRuleEntity): Long =
         recurringRuleDao.insert(rule)
 
@@ -133,6 +135,8 @@ class FinanceRepository(
 
     fun getAllInstallmentPlans(): Flow<List<InstallmentPlanEntity>> =
         installmentPlanDao.getAll()
+
+    suspend fun deleteInstallmentPlan(plan: InstallmentPlanEntity) = installmentPlanDao.delete(plan)
 
     suspend fun addInstallmentPlan(plan: InstallmentPlanEntity): Long =
         installmentPlanDao.insert(plan)
@@ -173,3 +177,5 @@ class FinanceRepository(
     suspend fun setSetting(key: String, value: String) =
         settingDao.set(SettingEntity(key, value))
 }
+
+

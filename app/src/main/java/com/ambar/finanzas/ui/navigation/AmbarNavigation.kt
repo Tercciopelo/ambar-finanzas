@@ -105,7 +105,8 @@ fun AmbarNavigation(repository: FinanceRepository) {
                 SettingsScreen(viewModel = vm)
             }
             composable(AmbarScreen.PLANIFICACION.route) {
-                PlanificacionScreen()
+                val vm: com.ambar.finanzas.ui.screens.planificacion.PlanificacionViewModel = viewModel(factory = com.ambar.finanzas.ui.screens.planificacion.PlanificacionViewModel.Factory(repository))
+                PlanificacionScreen(viewModel = vm)
             }
         }
     }

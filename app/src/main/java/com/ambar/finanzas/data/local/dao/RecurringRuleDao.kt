@@ -18,6 +18,9 @@ interface RecurringRuleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(rule: RecurringRuleEntity): Long
 
+    @Delete
+    suspend fun delete(rule: RecurringRuleEntity)
+
     @Update
     suspend fun update(rule: RecurringRuleEntity)
 

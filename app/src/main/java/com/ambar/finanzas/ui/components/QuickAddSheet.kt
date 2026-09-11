@@ -99,14 +99,40 @@ fun QuickAddSheet(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(if (isExpense) "Ej: Uber, Almuerzo..." else "Ej: Sueldo, Transferencia...") },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp)
-            )
+            var expanded by remember { mutableStateOf(false) }
+            val activeRules by repository.getActiveRecurringRules().collectAsState(initial = emptyList())
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it; expanded = true },
+                    modifier = Modifier.fillMaxWidth().menuAnchor(),
+                    placeholder = { Text(if (isExpense) "Ej: Uber, Almuerzo..." else "Ej: Sueldo, Transferencia...") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp)
+                )
+
+                if (activeRules.isNotEmpty()) {
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        activeRules.forEach { rule ->
+                            DropdownMenuItem(
+                                text = { Text("${rule.description} (${com.ambar.finanzas.utils.CurrencyUtils.formatCLP(rule.amount)})") },
+                                onClick = {
+                                    description = rule.description
+                                    amountText = rule.amount.toString()
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
             
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -154,9 +180,9 @@ fun QuickAddSheet(
                     scope.launch {
                         try {
                             if (isExpense) {
-                                repository.addQuickExpense(amount, description.trim())
+                                repository.addQuickExpense(amount, description.trim(), null, note, isRecurring, isSubscription)
                             } else {
-                                repository.addQuickIncome(amount, description.trim())
+                                repository.addQuickIncome(amount, description.trim(), null, note, isRecurring)
                             }
                             onShowSnackbar("Guardado ✓")
                             onDismiss()

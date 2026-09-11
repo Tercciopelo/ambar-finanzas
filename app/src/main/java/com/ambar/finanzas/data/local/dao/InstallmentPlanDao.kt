@@ -18,6 +18,9 @@ interface InstallmentPlanDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(plan: InstallmentPlanEntity): Long
 
+    @Delete
+    suspend fun delete(plan: InstallmentPlanEntity)
+
     @Update
     suspend fun update(plan: InstallmentPlanEntity)
 
