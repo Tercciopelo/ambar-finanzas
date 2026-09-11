@@ -1,55 +1,62 @@
 package com.ambar.finanzas.ui.screens.transactions
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.ambar.finanzas.data.local.entity.TransactionEntity
 import com.ambar.finanzas.data.repository.FinanceRepository
-import com.ambar.finanzas.utils.CurrencyUtils
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
 data class TransactionsUiState(
     val transactions: List<TransactionEntity> = emptyList(),
     val searchQuery: String = "",
-    val filterType: String? = null // null = all, INCOME, EXPENSE
+    val filterType: String = "ALL"
 )
 
-class TransactionsViewModel(private val repository: FinanceRepository) : ViewModel() {
+class TransactionsViewModel(
+    private val repository: FinanceRepository
+) : ViewModel() {
 
-    private val _searchQuery = MutableStateFlow("")
-    private val _filterType = MutableStateFlow<String?>(null)
-    private val _monthKey = MutableStateFlow(CurrencyUtils.currentMonthKey())
+    private val searchQuery = MutableStateFlow("")
+    private val filterType = MutableStateFlow("ALL")
 
     val uiState: StateFlow<TransactionsUiState> = combine(
-        _monthKey.flatMapLatest { repository.getTransactionsByMonth(it) },
-        _searchQuery,
-        _filterType
-    ) { transactions, query, filter ->
-        var filtered = transactions
+        repository.getRecentTransactions(100),
+        searchQuery,
+        filterType
+    ) { txs, query, type ->
+        var filtered = txs
         if (query.isNotBlank()) {
             filtered = filtered.filter { it.description.contains(query, ignoreCase = true) }
         }
-        if (filter != null) {
-            filtered = filtered.filter { it.type == filter }
+        if (type != "ALL") {
+            filtered = filtered.filter { it.type == type }
         }
         TransactionsUiState(
             transactions = filtered,
             searchQuery = query,
-            filterType = filter
+            filterType = type
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TransactionsUiState())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = TransactionsUiState()
+    )
 
-    fun setSearch(query: String) { _searchQuery.value = query }
-    fun setFilter(type: String?) { _filterType.value = type }
-
-    fun deleteTransaction(id: Long) {
-        viewModelScope.launch { repository.deleteTransaction(id) }
+    fun setSearchQuery(query: String) {
+        searchQuery.value = query
     }
 
-    class Factory(private val repository: FinanceRepository) : ViewModelProvider.Factory {
+    fun setFilterType(type: String) {
+        filterType.value = type
+    }
+
+    class Factory(private val repository: FinanceRepository) : androidx.lifecycle.ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
             return TransactionsViewModel(repository) as T
         }
     }

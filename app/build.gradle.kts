@@ -97,4 +97,11 @@ dependencies {
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    
+    // Vico Charts
+    implementation("com.patrykandpatrick.vico:compose-m3:1.14.0")
+    implementation("com.patrykandpatrick.vico:core:1.14.0")
+    
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
 }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -41,10 +42,13 @@ fun AmbarNavigation(repository: FinanceRepository) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     var showQuickAdd by remember { mutableStateOf(false) }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             NavigationBar {
                 AmbarScreen.entries.forEach { screen ->
@@ -101,7 +105,10 @@ fun AmbarNavigation(repository: FinanceRepository) {
     if (showQuickAdd) {
         QuickAddSheet(
             repository = repository,
-            onDismiss = { showQuickAdd = false }
+            onDismiss = { showQuickAdd = false },
+            onShowSnackbar = { msg ->
+                scope.launch { snackbarHostState.showSnackbar(msg) }
+            }
         )
     }
 }

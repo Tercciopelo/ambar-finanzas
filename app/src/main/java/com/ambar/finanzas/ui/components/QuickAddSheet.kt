@@ -1,8 +1,12 @@
 package com.ambar.finanzas.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,13 +26,18 @@ fun QuickAddSheet(
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
     val focusRequester = remember { FocusRequester() }
 
     var isExpense by remember { mutableStateOf(true) }
     var amountText by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var isSaving by remember { mutableStateOf(false) }
+
+    var showMoreOptions by remember { mutableStateOf(false) }
+    var note by remember { mutableStateOf("") }
+    var status by remember { mutableStateOf("PAID") }
+    var isRecurring by remember { mutableStateOf(false) }
+    var isSubscription by remember { mutableStateOf(false) }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -41,7 +50,6 @@ fun QuickAddSheet(
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Type selector
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -62,9 +70,8 @@ fun QuickAddSheet(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Amount
             Text(
-                if (isExpense) "¿Cuánto gastaste?" else "¿Cuánto ingresó?",
+                if (isExpense) "¿Cuánto gastaste?" else "¿Cuánto recibiste?",
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -87,8 +94,7 @@ fun QuickAddSheet(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Description
-            Text("¿En qué?", style = MaterialTheme.typography.titleMedium)
+            Text(if (isExpense) "¿En qué?" else "¿De dónde?", style = MaterialTheme.typography.titleMedium)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -96,14 +102,48 @@ fun QuickAddSheet(
                 value = description,
                 onValueChange = { description = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Ej: Almuerzo, Uber, Sueldo...") },
+                placeholder = { Text(if (isExpense) "Ej: Uber, Almuerzo..." else "Ej: Sueldo, Transferencia...") },
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp)
             )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TextButton(onClick = { showMoreOptions = !showMoreOptions }) {
+                Text("Más opciones")
+                Icon(
+                    imageVector = if (showMoreOptions) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null
+                )
+            }
+
+            AnimatedVisibility(visible = showMoreOptions) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = note,
+                        onValueChange = { note = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("Nota") },
+                        singleLine = true,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(checked = isRecurring, onCheckedChange = { isRecurring = it })
+                        Text("Repetir mensualmente")
+                    }
+                    if (isExpense && isRecurring) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(checked = isSubscription, onCheckedChange = { isSubscription = it })
+                            Text("Es suscripción")
+                        }
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Save button
             Button(
                 onClick = {
                     val amount = amountText.toLongOrNull()
