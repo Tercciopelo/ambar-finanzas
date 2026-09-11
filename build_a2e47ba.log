@@ -1,0 +1,377 @@
+﻿2026-09-11T00:59:56.2901842Z Current runner version: '2.337.0'
+2026-09-11T00:59:56.2926670Z ##[group]Runner Image Provisioner
+2026-09-11T00:59:56.2927636Z Hosted Compute Agent
+2026-09-11T00:59:56.2928254Z Version: 20260828.587
+2026-09-11T00:59:56.2928978Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-11T00:59:56.2929718Z Build Date: 2026-08-28T16:44:25Z
+2026-09-11T00:59:56.2930443Z Worker ID: {36d0a8bb-838b-4c4b-8ff7-91b4c35b0509}
+2026-09-11T00:59:56.2931190Z Azure Region: westus
+2026-09-11T00:59:56.2931783Z ##[endgroup]
+2026-09-11T00:59:56.2933419Z ##[group]Operating System
+2026-09-11T00:59:56.2934116Z Ubuntu
+2026-09-11T00:59:56.2934832Z 24.04.5
+2026-09-11T00:59:56.2935504Z LTS
+2026-09-11T00:59:56.2936062Z ##[endgroup]
+2026-09-11T00:59:56.2936672Z ##[group]Runner Image
+2026-09-11T00:59:56.2937278Z Image: ubuntu-24.04
+2026-09-11T00:59:56.2937836Z Version: 20260907.300.1
+2026-09-11T00:59:56.2939205Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260907.300/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-11T00:59:56.2940858Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260907.300
+2026-09-11T00:59:56.2941897Z ##[endgroup]
+2026-09-11T00:59:56.2943518Z ##[group]GITHUB_TOKEN Permissions
+2026-09-11T00:59:56.2945923Z Contents: read
+2026-09-11T00:59:56.2946529Z Metadata: read
+2026-09-11T00:59:56.2947204Z Packages: read
+2026-09-11T00:59:56.2947761Z ##[endgroup]
+2026-09-11T00:59:56.2949931Z Secret source: Actions
+2026-09-11T00:59:56.2950971Z Cache mode: write
+2026-09-11T00:59:56.2951706Z Prepare workflow directory
+2026-09-11T00:59:56.3311424Z Prepare all required actions
+2026-09-11T00:59:56.3385739Z Getting action download info
+2026-09-11T00:59:56.7156051Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-09-11T00:59:56.8221729Z Download action repository 'actions/setup-java@v4' (SHA:cf277c60eb25467037889841efdb72551f06f6c3)
+2026-09-11T00:59:57.4353082Z Download action repository 'gradle/actions@v4' (SHA:ed408507eac070d1f99cc633dbcf757c94c7933a)
+2026-09-11T00:59:58.4986133Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-09-11T00:59:58.7188891Z Complete job name: build
+2026-09-11T00:59:58.7913930Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-11T00:59:58.7922328Z ##[group]Run actions/checkout@v4
+2026-09-11T00:59:58.7922868Z with:
+2026-09-11T00:59:58.7923157Z   repository: Tercciopelo/ambar-finanzas
+2026-09-11T00:59:58.7926289Z   token: ***
+2026-09-11T00:59:58.7926560Z   ssh-strict: true
+2026-09-11T00:59:58.7926818Z   ssh-user: git
+2026-09-11T00:59:58.7927089Z   persist-credentials: true
+2026-09-11T00:59:58.7927381Z   clean: true
+2026-09-11T00:59:58.7927653Z   sparse-checkout-cone-mode: true
+2026-09-11T00:59:58.7927988Z   fetch-depth: 1
+2026-09-11T00:59:58.7928245Z   fetch-tags: false
+2026-09-11T00:59:58.7928513Z   show-progress: true
+2026-09-11T00:59:58.7928775Z   lfs: false
+2026-09-11T00:59:58.7929044Z   submodules: false
+2026-09-11T00:59:58.7929361Z   set-safe-directory: true
+2026-09-11T00:59:58.7929876Z   allow-unsafe-pr-checkout: false
+2026-09-11T00:59:58.7930842Z ##[endgroup]
+2026-09-11T00:59:58.8909665Z Syncing repository: Tercciopelo/ambar-finanzas
+2026-09-11T00:59:58.8911737Z ##[group]Getting Git version info
+2026-09-11T00:59:58.8912622Z Working directory is '/home/runner/work/ambar-finanzas/ambar-finanzas'
+2026-09-11T00:59:58.8913780Z [command]/usr/bin/git version
+2026-09-11T00:59:58.8966827Z git version 2.55.0
+2026-09-11T00:59:58.8988855Z ##[endgroup]
+2026-09-11T00:59:58.9003197Z Temporarily overriding HOME='/home/runner/work/_temp/cf257b8a-ec93-4da6-9351-cc1aa92120d0' before making global git config changes
+2026-09-11T00:59:58.9005191Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-11T00:59:58.9008736Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ambar-finanzas/ambar-finanzas
+2026-09-11T00:59:58.9062515Z Deleting the contents of '/home/runner/work/ambar-finanzas/ambar-finanzas'
+2026-09-11T00:59:58.9067751Z ##[group]Initializing the repository
+2026-09-11T00:59:58.9072881Z [command]/usr/bin/git init /home/runner/work/ambar-finanzas/ambar-finanzas
+2026-09-11T00:59:58.9179989Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-11T00:59:58.9180886Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-11T00:59:58.9181621Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-11T00:59:58.9182169Z hint: call:
+2026-09-11T00:59:58.9182568Z hint:
+2026-09-11T00:59:58.9183248Z hint: 	git config --global init.defaultBranch <name>
+2026-09-11T00:59:58.9184031Z hint:
+2026-09-11T00:59:58.9184768Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-11T00:59:58.9186004Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-11T00:59:58.9187012Z hint:
+2026-09-11T00:59:58.9187599Z hint: 	git branch -m <name>
+2026-09-11T00:59:58.9188231Z hint:
+2026-09-11T00:59:58.9189036Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-11T00:59:58.9190901Z Initialized empty Git repository in /home/runner/work/ambar-finanzas/ambar-finanzas/.git/
+2026-09-11T00:59:58.9197022Z [command]/usr/bin/git remote add origin https://github.com/Tercciopelo/ambar-finanzas
+2026-09-11T00:59:58.9245967Z ##[endgroup]
+2026-09-11T00:59:58.9246979Z ##[group]Disabling automatic garbage collection
+2026-09-11T00:59:58.9249616Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-11T00:59:58.9282310Z ##[endgroup]
+2026-09-11T00:59:58.9283058Z ##[group]Setting up auth
+2026-09-11T00:59:58.9289956Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-11T00:59:58.9398377Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-11T00:59:58.9747309Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-11T00:59:58.9785759Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-11T00:59:59.0010701Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-11T00:59:59.0046473Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-11T00:59:59.0275715Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-11T00:59:59.0313549Z ##[endgroup]
+2026-09-11T00:59:59.0314802Z ##[group]Fetching the repository
+2026-09-11T00:59:59.0324771Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +a2e47ba09b8a57c060ca9249e07270d38a0c65ce:refs/remotes/origin/main
+2026-09-11T00:59:59.4880372Z From https://github.com/Tercciopelo/ambar-finanzas
+2026-09-11T00:59:59.4883724Z  * [new ref]         a2e47ba09b8a57c060ca9249e07270d38a0c65ce -> origin/main
+2026-09-11T00:59:59.4886073Z ##[endgroup]
+2026-09-11T00:59:59.4886745Z ##[group]Determining the checkout info
+2026-09-11T00:59:59.4887870Z ##[endgroup]
+2026-09-11T00:59:59.4893995Z [command]/usr/bin/git sparse-checkout disable
+2026-09-11T00:59:59.4947640Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-11T00:59:59.4980425Z ##[group]Checking out the ref
+2026-09-11T00:59:59.4985699Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-09-11T00:59:59.5098907Z Switched to a new branch 'main'
+2026-09-11T00:59:59.5106395Z branch 'main' set up to track 'origin/main'.
+2026-09-11T00:59:59.5111435Z ##[endgroup]
+2026-09-11T00:59:59.5153012Z [command]/usr/bin/git log -1 --format=%H
+2026-09-11T00:59:59.5179604Z a2e47ba09b8a57c060ca9249e07270d38a0c65ce
+2026-09-11T00:59:59.5462808Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-11T00:59:59.5464731Z ##[group]Run actions/setup-java@v4
+2026-09-11T00:59:59.5465006Z with:
+2026-09-11T00:59:59.5465204Z   distribution: zulu
+2026-09-11T00:59:59.5465430Z   java-version: 17
+2026-09-11T00:59:59.5465638Z   java-package: jdk
+2026-09-11T00:59:59.5465849Z   check-latest: false
+2026-09-11T00:59:59.5466059Z   server-id: github
+2026-09-11T00:59:59.5466276Z   server-username: GITHUB_ACTOR
+2026-09-11T00:59:59.5466547Z   server-password: GITHUB_TOKEN
+2026-09-11T00:59:59.5466795Z   overwrite-settings: true
+2026-09-11T00:59:59.5467023Z   job-status: success
+2026-09-11T00:59:59.5469722Z   token: ***
+2026-09-11T00:59:59.5469925Z ##[endgroup]
+2026-09-11T00:59:59.7237973Z ##[warning]setup-java v4 is deprecated and will no longer receive updates. Please migrate to actions/setup-java@v5.
+2026-09-11T00:59:59.7249032Z ##[group]Installed distributions
+2026-09-11T00:59:59.7253840Z Trying to resolve the latest version from remote
+2026-09-11T00:59:59.7363296Z (node:2277) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-11T00:59:59.7365059Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-11T00:59:59.7895971Z Resolved latest version as 17.0.20+8
+2026-09-11T00:59:59.7913353Z Trying to download...
+2026-09-11T00:59:59.7914446Z Downloading Java 17.0.20+8 (Zulu) from https://cdn.azul.com/zulu/bin/zulu17.68.19-ca-crac-jdk17.0.20-linux_x64.tar.gz ...
+2026-09-11T01:00:05.4662844Z Extracting Java archive...
+2026-09-11T01:00:05.4807587Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/c84f0303-e405-46b8-b6a0-89fe4a3dedb1 -f /home/runner/work/_temp/18f2918a-8772-408a-bb0e-850db65f1197
+2026-09-11T01:00:08.1884145Z Java 17.0.20+8 was downloaded
+2026-09-11T01:00:08.1884911Z Setting Java 17.0.20+8 as the default
+2026-09-11T01:00:08.1894003Z Creating toolchains.xml for JDK version 17 from zulu
+2026-09-11T01:00:08.1966446Z Writing to /home/runner/.m2/toolchains.xml
+2026-09-11T01:00:08.1966974Z 
+2026-09-11T01:00:08.1967170Z Java configuration:
+2026-09-11T01:00:08.1967622Z   Distribution: zulu
+2026-09-11T01:00:08.1968047Z   Version: 17.0.20+8
+2026-09-11T01:00:08.1968567Z   Path: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.20-8/x64
+2026-09-11T01:00:08.1969060Z 
+2026-09-11T01:00:08.1969808Z ##[endgroup]
+2026-09-11T01:00:08.1989728Z Creating settings.xml with server-id: github
+2026-09-11T01:00:08.1990369Z Writing to /home/runner/.m2/settings.xml
+2026-09-11T01:00:08.2313673Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-11T01:00:08.2315483Z ##[group]Run gradle/actions/setup-gradle@v4
+2026-09-11T01:00:08.2315780Z with:
+2026-09-11T01:00:08.2315988Z   gradle-version: 8.7
+2026-09-11T01:00:08.2316216Z   cache-disabled: false
+2026-09-11T01:00:08.2316454Z   cache-read-only: false
+2026-09-11T01:00:08.2316693Z   cache-write-only: false
+2026-09-11T01:00:08.2316940Z   cache-overwrite-existing: false
+2026-09-11T01:00:08.2317204Z   cache-cleanup: on-success
+2026-09-11T01:00:08.2317501Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-11T01:00:08.2317833Z   add-job-summary: always
+2026-09-11T01:00:08.2318092Z   add-job-summary-as-pr-comment: never
+2026-09-11T01:00:08.2318613Z   dependency-graph: disabled
+2026-09-11T01:00:08.2318925Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-11T01:00:08.2319314Z   dependency-graph-continue-on-failure: true
+2026-09-11T01:00:08.2319625Z   build-scan-publish: false
+2026-09-11T01:00:08.2319869Z   validate-wrappers: true
+2026-09-11T01:00:08.2320158Z   allow-snapshot-wrappers: false
+2026-09-11T01:00:08.2320450Z   gradle-home-cache-strict-match: false
+2026-09-11T01:00:08.2320742Z   workflow-job-context: null
+2026-09-11T01:00:08.2323531Z   github-token: ***
+2026-09-11T01:00:08.2323750Z env:
+2026-09-11T01:00:08.2324092Z   JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.20-8/x64
+2026-09-11T01:00:08.2324729Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.20-8/x64
+2026-09-11T01:00:08.2325088Z ##[endgroup]
+2026-09-11T01:00:08.5653939Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-09-11T01:00:08.5657536Z Preparing cache for cleanup.
+2026-09-11T01:00:08.5661370Z ##[group]Restore Gradle state from cache
+2026-09-11T01:00:08.8236624Z Cache hit for restore-key: gradle-home-v1|Linux-X64|build[e080f0fdc288b6f0c5023fd4b86f7a10]-8f8da450ebb3256df86ea87cc0434d8bcfb47081
+2026-09-11T01:00:10.1260772Z Received 0 of 3636735 (0.0%), 0.0 MBs/sec
+2026-09-11T01:00:10.4364990Z Received 3636735 of 3636735 (100.0%), 2.6 MBs/sec
+2026-09-11T01:00:10.4366574Z Cache Size: ~3 MB (3636735 B)
+2026-09-11T01:00:10.4395749Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2b921463-b51a-490d-ac35-c910ebcdaf77/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:10.5527710Z Cache restored successfully
+2026-09-11T01:00:10.5534360Z Restored cache entry with key gradle-home-v1|Linux-X64|build[e080f0fdc288b6f0c5023fd4b86f7a10]-a2e47ba09b8a57c060ca9249e07270d38a0c65ce to /home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle in 1986ms
+2026-09-11T01:00:10.8020230Z Cache hit for: gradle-dependencies-v1-b2bd3126579f9e50af4079baabda0c77
+2026-09-11T01:00:10.8026770Z Cache hit for: gradle-transforms-v1-5d68ae0787c5b8831ff582ae5d141242
+2026-09-11T01:00:10.8080129Z Cache hit for: gradle-kotlin-dsl-v1-504c10427e8833a1a669b6f0b80142dd
+2026-09-11T01:00:10.8086886Z Cache hit for: gradle-generated-gradle-jars-v1-d6d47bedd9337a0be6f3a426277e63ee
+2026-09-11T01:00:10.8097942Z Cache hit for: gradle-groovy-dsl-v1-c72b6bcfc06dafd56c9bd6120705d3d8
+2026-09-11T01:00:10.8377489Z Cache hit for: gradle-instrumented-jars-v1-1f225db16fa11522ca463a100d8c4b3a
+2026-09-11T01:00:11.1225729Z Received 90344 of 90344 (100.0%), 0.4 MBs/sec
+2026-09-11T01:00:11.1226518Z Cache Size: ~0 MB (90344 B)
+2026-09-11T01:00:11.1247403Z [command]/usr/bin/tar -xf /home/runner/work/_temp/14ae0183-6a55-4dcf-bb7d-ac4beebc0e16/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:11.1366870Z Cache restored successfully
+2026-09-11T01:00:11.1381277Z Restored cache entry with key gradle-instrumented-jars-v1-1f225db16fa11522ca463a100d8c4b3a to /home/runner/.gradle/caches/jars-*/*/ in 583ms
+2026-09-11T01:00:11.5220772Z Received 116643 of 116643 (100.0%), 0.3 MBs/sec
+2026-09-11T01:00:11.5221600Z Cache Size: ~0 MB (116643 B)
+2026-09-11T01:00:11.5246029Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7b1b76cf-f57b-4fb4-adb0-76985303790b/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:11.5296526Z Received 146108 of 146108 (100.0%), 0.3 MBs/sec
+2026-09-11T01:00:11.5297541Z Cache Size: ~0 MB (146108 B)
+2026-09-11T01:00:11.5349763Z [command]/usr/bin/tar -xf /home/runner/work/_temp/377c6b35-2658-438f-88a6-6dee84c8d929/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:11.5847782Z Cache restored successfully
+2026-09-11T01:00:11.5849878Z Restored cache entry with key gradle-groovy-dsl-v1-c72b6bcfc06dafd56c9bd6120705d3d8 to /home/runner/.gradle/caches/*/groovy-dsl/*/ in 1029ms
+2026-09-11T01:00:11.5997334Z Cache restored successfully
+2026-09-11T01:00:11.5998641Z Restored cache entry with key gradle-kotlin-dsl-v1-504c10427e8833a1a669b6f0b80142dd to /home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/,/home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/ in 1043ms
+2026-09-11T01:00:12.0661957Z Received 0 of 231392751 (0.0%), 0.0 MBs/sec
+2026-09-11T01:00:12.0841913Z Received 0 of 272233798 (0.0%), 0.0 MBs/sec
+2026-09-11T01:00:12.0987472Z Received 0 of 37946144 (0.0%), 0.0 MBs/sec
+2026-09-11T01:00:12.7240137Z Received 37946144 of 37946144 (100.0%), 22.3 MBs/sec
+2026-09-11T01:00:12.7242917Z Cache Size: ~36 MB (37946144 B)
+2026-09-11T01:00:12.7708855Z [command]/usr/bin/tar -xf /home/runner/work/_temp/8cb0a7f1-37e4-4870-a66b-9ef13dfc26fa/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:13.0749144Z Received 130023424 of 231392751 (56.2%), 62.0 MBs/sec
+2026-09-11T01:00:13.0750158Z Cache restored successfully
+2026-09-11T01:00:13.0751887Z Restored cache entry with key gradle-generated-gradle-jars-v1-d6d47bedd9337a0be6f3a426277e63ee to /home/runner/.gradle/caches/8.7/generated-gradle-jars/gradle-api-8.7.jar in 2521ms
+2026-09-11T01:00:13.0843337Z Received 130023424 of 272233798 (47.8%), 62.0 MBs/sec
+2026-09-11T01:00:13.8261347Z Received 231392751 of 231392751 (100.0%), 80.0 MBs/sec
+2026-09-11T01:00:13.8263364Z Cache Size: ~221 MB (231392751 B)
+2026-09-11T01:00:13.8779636Z [command]/usr/bin/tar -xf /home/runner/work/_temp/3a5c35ec-f550-48c7-9ed4-bd36c57e6985/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:14.0846518Z Received 268435456 of 272233798 (98.6%), 85.3 MBs/sec
+2026-09-11T01:00:14.2370623Z Received 272233798 of 272233798 (100.0%), 82.3 MBs/sec
+2026-09-11T01:00:14.2372009Z Cache Size: ~260 MB (272233798 B)
+2026-09-11T01:00:14.2437953Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e94b4aa6-c447-4fa3-98ac-51760bbd2c53/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:14.9271199Z Cache restored successfully
+2026-09-11T01:00:14.9447264Z Restored cache entry with key gradle-dependencies-v1-b2bd3126579f9e50af4079baabda0c77 to /home/runner/.gradle/caches/modules-*/files-*/*/*/*/* in 4389ms
+2026-09-11T01:00:15.7715514Z Cache restored successfully
+2026-09-11T01:00:15.7812328Z Restored cache entry with key gradle-transforms-v1-5d68ae0787c5b8831ff582ae5d141242 to /home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/ in 5226ms
+2026-09-11T01:00:15.9195570Z ##[endgroup]
+2026-09-11T01:00:15.9310581Z ##[group]All Gradle Wrapper jars are valid
+2026-09-11T01:00:15.9311567Z 
+2026-09-11T01:00:15.9311877Z ##[endgroup]
+2026-09-11T01:00:15.9784338Z ##[group]Provision Gradle 8.7
+2026-09-11T01:00:21.7662964Z Cache hit for: gradle-8.7
+2026-09-11T01:00:23.0723845Z Received 0 of 133909426 (0.0%), 0.0 MBs/sec
+2026-09-11T01:00:24.0765813Z Received 130023424 of 133909426 (97.1%), 61.9 MBs/sec
+2026-09-11T01:00:24.1191885Z Received 133909426 of 133909426 (100.0%), 62.4 MBs/sec
+2026-09-11T01:00:24.1193789Z Cache Size: ~128 MB (133909426 B)
+2026-09-11T01:00:24.1222972Z [command]/usr/bin/tar -xf /home/runner/work/_temp/4c32b371-0a69-4b64-9c6d-25cf6ddc4577/cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --use-compress-program unzstd
+2026-09-11T01:00:24.2923419Z Cache restored successfully
+2026-09-11T01:00:24.2982930Z Restored Gradle distribution gradle-8.7 from cache to /home/runner/work/_temp/.gradle-actions/gradle-installations/downloads/gradle-8.7-bin.zip
+2026-09-11T01:00:24.3000933Z [command]/usr/bin/unzip -o -q /home/runner/work/_temp/.gradle-actions/gradle-installations/downloads/gradle-8.7-bin.zip
+2026-09-11T01:00:25.2521658Z Extracted Gradle 8.7 to /home/runner/work/_temp/.gradle-actions/gradle-installations/installs/gradle-8.7
+2026-09-11T01:00:25.2523932Z Provisioned Gradle executable /home/runner/work/_temp/.gradle-actions/gradle-installations/installs/gradle-8.7/bin/gradle
+2026-09-11T01:00:25.2526322Z ##[endgroup]
+2026-09-11T01:00:25.2731552Z ##[group]Run gradle test
+2026-09-11T01:00:25.2731936Z [36;1mgradle test[0m
+2026-09-11T01:00:25.2771649Z shell: /usr/bin/bash -e {0}
+2026-09-11T01:00:25.2771976Z env:
+2026-09-11T01:00:25.2772304Z   JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.20-8/x64
+2026-09-11T01:00:25.2772794Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.20-8/x64
+2026-09-11T01:00:25.2773249Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-11T01:00:25.2773616Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-11T01:00:25.2773964Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-11T01:00:25.2774311Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-11T01:00:25.2775127Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-11T01:00:25.2775664Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-11T01:00:25.2776045Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-11T01:00:25.2776359Z ##[endgroup]
+2026-09-11T01:00:25.9775906Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-09-11T01:00:35.0816223Z > Task :app:checkKotlinGradlePluginConfigurationErrors
+2026-09-11T01:00:35.0845024Z > Task :app:preBuild UP-TO-DATE
+2026-09-11T01:00:35.0875382Z > Task :app:preDebugBuild UP-TO-DATE
+2026-09-11T01:00:35.5786028Z > Task :app:generateDebugResValues
+2026-09-11T01:00:35.6772420Z > Task :app:checkDebugAarMetadata
+2026-09-11T01:00:35.6773398Z > Task :app:mapDebugSourceSetPaths
+2026-09-11T01:00:35.6774259Z > Task :app:generateDebugResources
+2026-09-11T01:00:37.1771819Z > Task :app:packageDebugResources
+2026-09-11T01:00:37.9775805Z > Task :app:mergeDebugResources
+2026-09-11T01:00:38.0780515Z > Task :app:createDebugCompatibleScreenManifests
+2026-09-11T01:00:38.0805172Z > Task :app:extractDeepLinksDebug
+2026-09-11T01:00:38.2785715Z > Task :app:parseDebugLocalResources
+2026-09-11T01:00:38.3779359Z > Task :app:processDebugMainManifest
+2026-09-11T01:00:38.4775877Z > Task :app:processDebugManifest
+2026-09-11T01:00:38.5801128Z > Task :app:preDebugUnitTestBuild UP-TO-DATE
+2026-09-11T01:00:38.5853419Z > Task :app:processDebugManifestForPackage
+2026-09-11T01:00:38.5854356Z > Task :app:javaPreCompileDebug
+2026-09-11T01:00:38.5855493Z > Task :app:javaPreCompileDebugUnitTest
+2026-09-11T01:00:38.7776942Z > Task :app:buildKotlinToolingMetadata
+2026-09-11T01:00:38.7815386Z > Task :app:preReleaseBuild UP-TO-DATE
+2026-09-11T01:00:38.8812613Z > Task :app:generateReleaseResValues
+2026-09-11T01:00:38.8813353Z > Task :app:checkReleaseAarMetadata
+2026-09-11T01:00:38.8849230Z > Task :app:mapReleaseSourceSetPaths
+2026-09-11T01:00:38.8870530Z > Task :app:generateReleaseResources
+2026-09-11T01:00:39.3785441Z > Task :app:processDebugResources
+2026-09-11T01:00:40.1769324Z > Task :app:mergeReleaseResources
+2026-09-11T01:00:41.2826448Z > Task :app:packageReleaseResources
+2026-09-11T01:00:41.2839843Z > Task :app:createReleaseCompatibleScreenManifests
+2026-09-11T01:00:41.2865809Z > Task :app:extractDeepLinksRelease
+2026-09-11T01:00:41.2895674Z > Task :app:parseReleaseLocalResources
+2026-09-11T01:00:41.3795538Z > Task :app:processReleaseMainManifest
+2026-09-11T01:00:41.3796237Z > Task :app:processReleaseManifest
+2026-09-11T01:00:41.3796875Z > Task :app:processReleaseManifestForPackage
+2026-09-11T01:00:41.3797514Z > Task :app:javaPreCompileRelease
+2026-09-11T01:00:41.4798940Z > Task :app:preReleaseUnitTestBuild UP-TO-DATE
+2026-09-11T01:00:41.4815910Z > Task :app:javaPreCompileReleaseUnitTest
+2026-09-11T01:00:41.9792372Z > Task :app:processReleaseResources
+2026-09-11T01:00:49.1773013Z > Task :app:kspDebugKotlin
+2026-09-11T01:00:49.1795634Z > Task :app:kspReleaseKotlin
+2026-09-11T01:00:56.9786729Z e: file:///home/runner/work/ambar-finanzas/ambar-finanzas/app/src/main/java/com/ambar/finanzas/utils/BackupService.kt:71:74 Suspension functions can be called only within coroutine body
+2026-09-11T01:00:56.9788023Z 
+2026-09-11T01:00:56.9811263Z > Task :app:compileDebugKotlin FAILED
+2026-09-11T01:00:56.9826505Z e: file:///home/runner/work/ambar-finanzas/ambar-finanzas/app/src/main/java/com/ambar/finanzas/utils/BackupService.kt:75:69 Suspension functions can be called only within coroutine body
+2026-09-11T01:00:56.9828055Z 
+2026-09-11T01:00:56.9856186Z e: file:///home/runner/work/ambar-finanzas/ambar-finanzas/app/src/main/java/com/ambar/finanzas/utils/BackupService.kt:71:74 Suspension functions can be called only within coroutine body
+2026-09-11T01:00:56.9857719Z > Task :app:compileReleaseKotlin FAILED
+2026-09-11T01:00:56.9886168Z e: file:///home/runner/work/ambar-finanzas/ambar-finanzas/app/src/main/java/com/ambar/finanzas/utils/BackupService.kt:75:69 Suspension functions can be called only within coroutine body
+2026-09-11T01:00:56.9888152Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1789088428686.json
+2026-09-11T01:00:57.0775496Z 
+2026-09-11T01:00:57.0791392Z 36 actionable tasks: 36 executed
+2026-09-11T01:00:57.0800493Z FAILURE: Build completed with 2 failures.
+2026-09-11T01:00:57.0824944Z 
+2026-09-11T01:00:57.0856009Z 1: Task failed with an exception.
+2026-09-11T01:00:57.0862954Z -----------
+2026-09-11T01:00:57.0874995Z * What went wrong:
+2026-09-11T01:00:57.0875959Z Execution failed for task ':app:compileReleaseKotlin'.
+2026-09-11T01:00:57.0877720Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-09-11T01:00:57.0879393Z    > Compilation error. See log for more details
+2026-09-11T01:00:57.0879857Z 
+2026-09-11T01:00:57.0880036Z * Try:
+2026-09-11T01:00:57.0880553Z > Run with --stacktrace option to get the stack trace.
+2026-09-11T01:00:57.0881329Z > Run with --info or --debug option to get more log output.
+2026-09-11T01:00:57.0882034Z > Run with --scan to get full insights.
+2026-09-11T01:00:57.0882669Z > Get more help at https://help.gradle.org.
+2026-09-11T01:00:57.0883358Z ==============================================================================
+2026-09-11T01:00:57.0883823Z 
+2026-09-11T01:00:57.0884032Z 2: Task failed with an exception.
+2026-09-11T01:00:57.0884797Z -----------
+2026-09-11T01:00:57.0885207Z * What went wrong:
+2026-09-11T01:00:57.0885761Z Execution failed for task ':app:compileDebugKotlin'.
+2026-09-11T01:00:57.0887164Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+2026-09-11T01:00:57.0888535Z    > Compilation error. See log for more details
+2026-09-11T01:00:57.0888951Z 
+2026-09-11T01:00:57.0889114Z * Try:
+2026-09-11T01:00:57.0889634Z > Run with --stacktrace option to get the stack trace.
+2026-09-11T01:00:57.0890427Z > Run with --info or --debug option to get more log output.
+2026-09-11T01:00:57.0891346Z > Run with --scan to get full insights.
+2026-09-11T01:00:57.0892015Z > Get more help at https://help.gradle.org.
+2026-09-11T01:00:57.0892688Z ==============================================================================
+2026-09-11T01:00:57.0896313Z 
+2026-09-11T01:00:57.0896512Z BUILD FAILED in 31s
+2026-09-11T01:00:57.5137897Z ##[error]Process completed with exit code 1.
+2026-09-11T01:00:57.5288735Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-11T01:00:57.5290090Z Post job cleanup.
+2026-09-11T01:00:57.7675780Z In post-action step
+2026-09-11T01:00:57.7688728Z ##[group]Stopping Gradle daemons
+2026-09-11T01:00:57.7690049Z Stopping Gradle daemons for /home/runner/work/_temp/.gradle-actions/gradle-installations/installs/gradle-8.7
+2026-09-11T01:00:57.7707083Z [command]/home/runner/work/_temp/.gradle-actions/gradle-installations/installs/gradle-8.7/bin/gradle --stop
+2026-09-11T01:00:58.7517334Z Stopping Daemon(s)
+2026-09-11T01:00:58.7535250Z 1 Daemon stopped
+2026-09-11T01:00:58.7650832Z ##[endgroup]
+2026-09-11T01:00:58.7653324Z Not performing cache-cleanup due to build failure
+2026-09-11T01:00:58.7654977Z ##[group]Caching Gradle state
+2026-09-11T01:01:00.0361686Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/ambar-finanzas/ambar-finanzas --files-from manifest.txt --use-compress-program zstdmt
+2026-09-11T01:01:01.3350238Z Sent 3638359 of 3638359 (100.0%), 3.7 MBs/sec
+2026-09-11T01:01:01.6056793Z Saved cache entry with key gradle-home-v1|Linux-X64|build[e080f0fdc288b6f0c5023fd4b86f7a10]-a2e47ba09b8a57c060ca9249e07270d38a0c65ce from /home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle in 1585ms
+2026-09-11T01:01:01.6058900Z ##[endgroup]
+2026-09-11T01:01:01.6062249Z Generating Job Summary
+2026-09-11T01:01:01.6074853Z Completed post-action step
+2026-09-11T01:01:01.6271722Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-11T01:01:01.6273068Z Post job cleanup.
+2026-09-11T01:01:01.7632119Z (node:2707) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-11T01:01:01.7633631Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-11T01:01:01.7816668Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-11T01:01:01.7817995Z Post job cleanup.
+2026-09-11T01:01:01.8771894Z [command]/usr/bin/git version
+2026-09-11T01:01:01.8822303Z git version 2.55.0
+2026-09-11T01:01:01.8862672Z Temporarily overriding HOME='/home/runner/work/_temp/d4e518bc-7383-42b2-be38-7d34f61374e0' before making global git config changes
+2026-09-11T01:01:01.8864110Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-11T01:01:01.8871324Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ambar-finanzas/ambar-finanzas
+2026-09-11T01:01:01.8913568Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-11T01:01:01.8964743Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-11T01:01:01.9216557Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-11T01:01:01.9245137Z http.https://github.com/.extraheader
+2026-09-11T01:01:01.9260090Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-09-11T01:01:01.9305633Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-11T01:01:01.9560425Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-11T01:01:01.9607269Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-11T01:01:01.9993349Z Cleaning up orphan processes
+2026-09-11T01:01:02.0286729Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

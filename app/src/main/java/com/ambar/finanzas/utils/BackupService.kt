@@ -59,7 +59,7 @@ class BackupService(private val context: Context, private val database: AmbarDat
 
             val data = gson.fromJson(json, BackupData::class.java)
 
-            database.runInTransaction {
+            androidx.room.withTransaction(database) {
                 // Clear existing
                 database.transactionDao().deleteAll()
                 database.categoryDao().deleteAll()
