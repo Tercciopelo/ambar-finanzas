@@ -2,6 +2,7 @@ package com.ambar.finanzas.utils
 
 import android.content.Context
 import android.net.Uri
+import androidx.room.withTransaction
 import com.ambar.finanzas.data.local.database.AmbarDatabase
 import com.ambar.finanzas.data.local.entity.*
 import com.google.gson.Gson
@@ -59,7 +60,7 @@ class BackupService(private val context: Context, private val database: AmbarDat
 
             val data = gson.fromJson(json, BackupData::class.java)
 
-            androidx.room.withTransaction(database) {
+            database.withTransaction {
                 // Clear existing
                 database.transactionDao().deleteAll()
                 database.categoryDao().deleteAll()

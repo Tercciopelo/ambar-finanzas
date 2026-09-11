@@ -56,6 +56,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.biometric:biometric:1.1.0")
     // Compose BOM
     val composeBom = platform("androidx.compose:compose-bom:2024.04.00")
     implementation(composeBom)
@@ -105,3 +106,4 @@ dependencies {
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
 }
+

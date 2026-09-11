@@ -1,67 +1,36 @@
-# Ámbar Finanzas 💰
+# Ámbar Finanzas
 
-Aplicación Android nativa de finanzas personales para Ámbar.
+Ámbar Finanzas es una aplicación Android de finanzas personales diseñada específicamente para ser **Simple por fuera, Robusta por dentro**. Está construida para mantener la privacidad absoluta de los datos, operando de manera 100% offline sin servicios en la nube.
 
-## Tecnologías
+## Funcionalidades
+- **Registro Rápido:** Ingresa gastos e ingresos en segundos.
+- **Planificación:** Visualiza qué puedes gastar hoy, tus próximos pagos y cuotas.
+- **Privacidad:** Datos almacenados localmente. Modo privado para ocultar saldos y soporte para biometría.
+- **Backups:** Exporta e importa tus datos en formato JSON. Exporta movimientos a CSV.
+- **Gráficos y Alertas:** Dashboards atractivos con reportes categorizados y notificaciones locales.
 
-- **Kotlin** + **Jetpack Compose**
-- **Material 3** (Material You)
-- **Room** (SQLite local)
-- **Navigation Compose**
-- **ViewModel** + **StateFlow**
-- **Coroutines**
-- **WorkManager** (alertas futuras)
+## Privacidad y Arquitectura
+- **100% Offline:** Sin Firebase, sin Supabase, sin analíticas ni trackers.
+- **Arquitectura:** MVI / MVVM con Jetpack Compose y Room (SQLite).
 
-## Arquitectura
-
-```
-MVVM + Repository
-
-Compose → ViewModel → Repository → DAO → Room
-```
-
-## Estructura del Proyecto
-
-```
-app/src/main/java/com/ambar/finanzas/
-├── AmbarApp.kt              # Application singleton
-├── MainActivity.kt          # Punto de entrada
-├── data/
-│   ├── local/
-│   │   ├── database/        # Room Database
-│   │   ├── dao/             # Data Access Objects
-│   │   └── entity/          # Entidades (13 tablas)
-│   └── repository/          # FinanceRepository
-├── ui/
-│   ├── components/          # QuickAddSheet
-│   ├── navigation/          # Bottom Nav + NavHost
-│   ├── screens/
-│   │   ├── home/            # Dashboard principal
-│   │   ├── transactions/    # Historial de movimientos
-│   │   ├── installments/    # Cuotas
-│   │   └── settings/        # Ajustes
-│   └── theme/               # Tema Ámbar (Material 3)
-└── utils/                   # Formato CLP, fechas
+## Cómo compilar y testear
+El proyecto utiliza Gradle. Puedes compilarlo localmente:
+```bash
+./gradlew clean
+./gradlew test
+./gradlew assembleDebug
 ```
 
-## Compilar
+## GitHub Actions y APK
+El repositorio está configurado con **GitHub Actions**. 
+- Cada push a `main` ejecuta pruebas unitarias y genera un APK de depuración (`Ambar-Finanzas-APK`).
+- Puedes descargar este artefacto directamente desde la pestaña **Actions** en GitHub.
 
-No se necesita Android Studio. El APK se genera automáticamente en GitHub Actions.
+## Release Firmada
+Existe un workflow preparado `release-apk.yml`. Para generar un APK firmado de producción:
+1. Configura los secretos en tu repositorio de GitHub: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
+2. Lanza el workflow manualmente (workflow_dispatch) o crea un Tag `v*`.
 
-### Desde GitHub:
-1. Hacer push a `main`
-2. Ir a Actions → "Build Android APK"
-3. Descargar artifact `Ambar-Finanzas-APK`
-
-## Moneda
-
-Todos los valores monetarios se almacenan como `Long` (CLP enteros).
-Formato: `$100.000` (es_CL)
-
-## Privacidad
-
-- ✅ 100% offline
-- ✅ Sin servidores
-- ✅ Sin analytics
-- ✅ Sin publicidad
-- ✅ Datos solo en el teléfono (Room/SQLite)
+## Cómo hacer respaldo y restaurar
+- **Respaldo:** Ve a Configuración -> Exportar Respaldo. Se generará un JSON en tus documentos.
+- **Restaurar:** Ve a Configuración -> Importar Respaldo y selecciona el archivo JSON. Se reemplazarán los datos.
