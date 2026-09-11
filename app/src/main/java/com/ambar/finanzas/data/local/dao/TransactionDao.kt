@@ -15,16 +15,16 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE id = :id")
     suspend fun getById(id: Long): TransactionEntity?
 
-    @Query("SELECT SUM(amount) FROM transactions WHERE type = 'INCOME' AND monthKey = :monthKey")
+    @Query("SELECT SUM(amount) FROM transactions WHERE type = 'INCOME' AND monthKey = :monthKey AND status = 'PAID'")
     fun getMonthlyIncome(monthKey: String): Flow<Long?>
 
     @Query("SELECT SUM(amount) FROM transactions WHERE type = 'EXPENSE' AND monthKey = :monthKey AND status = 'PAID'")
     fun getMonthlyExpenses(monthKey: String): Flow<Long?>
 
-    @Query("SELECT SUM(amount) FROM transactions WHERE type = 'EXPENSE' AND monthKey = :monthKey AND status = 'PENDING'")
+    @Query("SELECT SUM(amount) FROM transactions WHERE type = 'EXPENSE' AND monthKey = :monthKey AND status IN ('PENDING', 'OVERDUE')")
     fun getMonthlyPending(monthKey: String): Flow<Long?>
 
-    @Query("SELECT * FROM transactions WHERE type = 'EXPENSE' AND monthKey = :monthKey AND status = 'PENDING' ORDER BY date ASC")
+    @Query("SELECT * FROM transactions WHERE type = 'EXPENSE' AND monthKey = :monthKey AND status IN ('PENDING', 'OVERDUE') ORDER BY date ASC")
     fun getPendingPayments(monthKey: String): Flow<List<TransactionEntity>>
 
     @Query("SELECT categoryId, SUM(amount) as total FROM transactions WHERE type = 'EXPENSE' AND monthKey = :monthKey GROUP BY categoryId ORDER BY total DESC")

@@ -24,7 +24,7 @@ class AlertWorker(
         val repository = FinanceRepository(
             database.transactionDao(), database.categoryDao(),
             database.recurringRuleDao(), database.installmentPlanDao(),
-            database.budgetDao(), database.alertDao(), database.settingDao()
+            database.budgetDao(), database.alertDao(), database.settingDao(), database
         )
 
         val today = LocalDate.now()

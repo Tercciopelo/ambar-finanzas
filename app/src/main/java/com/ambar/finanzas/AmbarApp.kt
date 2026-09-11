@@ -20,7 +20,8 @@ class AmbarApp : Application() {
             installmentPlanDao = database.installmentPlanDao(),
             budgetDao = database.budgetDao(),
             alertDao = database.alertDao(),
-            settingDao = database.settingDao()
+            settingDao = database.settingDao(),
+            database = database
         )
     }
 

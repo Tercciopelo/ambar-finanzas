@@ -36,11 +36,10 @@ object CurrencyUtils {
         return YearMonth.parse(monthKey).plusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM"))
     }
 
-    fun daysRemainingInMonth(monthKey: String): Int {
+    fun daysRemainingInMonth(monthKey: String, today: LocalDate = LocalDate.now()): Int {
         val ym = YearMonth.parse(monthKey)
-        val today = LocalDate.now()
         return if (today.year == ym.year && today.monthValue == ym.monthValue) {
-            ym.lengthOfMonth() - today.dayOfMonth
+            ym.lengthOfMonth() - today.dayOfMonth + 1
         } else {
             ym.lengthOfMonth()
         }

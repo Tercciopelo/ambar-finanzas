@@ -8,17 +8,12 @@ import com.ambar.finanzas.data.repository.FinanceRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class PlanificacionViewModel(private val repository: FinanceRepository) : ViewModel() {
     val subscriptions: StateFlow<List<RecurringRuleEntity>> = repository.getActiveRecurringRules()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun deleteRule(rule: RecurringRuleEntity) {
-        viewModelScope.launch {
-            repository.deleteRecurringRule(rule)
-        }
-    }
+    suspend fun deleteRule(rule: RecurringRuleEntity) = repository.deleteRecurringRule(rule)
 
     class Factory(private val repository: FinanceRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

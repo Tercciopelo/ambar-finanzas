@@ -39,7 +39,9 @@ class BackupService(private val context: Context, private val database: AmbarDat
 
             val json = gson.toJson(data)
 
-            context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+            val output = context.contentResolver.openOutputStream(uri)
+                ?: error("No se pudo abrir el archivo de destino")
+            output.use { outputStream ->
                 OutputStreamWriter(outputStream).use { writer ->
                     writer.write(json)
                 }
@@ -56,9 +58,11 @@ class BackupService(private val context: Context, private val database: AmbarDat
                 InputStreamReader(inputStream).use { reader ->
                     reader.readText()
                 }
-            } ?: return@withContext Result.failure(Exception("Cannot read file"))
+            } ?: return@withContext Result.failure(Exception("No se pudo leer el archivo"))
 
             val data = gson.fromJson(json, BackupData::class.java)
+                ?: return@withContext Result.failure(Exception("El respaldo está vacío"))
+            require(data.schemaVersion == 1) { "Esta versión del respaldo no es compatible" }
 
             database.withTransaction {
                 // Clear existing
@@ -67,6 +71,7 @@ class BackupService(private val context: Context, private val database: AmbarDat
                 database.recurringRuleDao().deleteAll()
                 database.installmentPlanDao().deleteAll()
                 database.budgetDao().deleteAll()
+                database.settingDao().deleteAll()
                 
                 // Insert new
                 if (data.categories.isNotEmpty()) database.categoryDao().insertAll(data.categories)
@@ -89,7 +94,9 @@ class BackupService(private val context: Context, private val database: AmbarDat
             val transactions = database.transactionDao().getAllSync()
             val categories = database.categoryDao().getAllSync().associateBy { it.id }
 
-            context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+            val output = context.contentResolver.openOutputStream(uri)
+                ?: error("No se pudo abrir el archivo de destino")
+            output.use { outputStream ->
                 OutputStreamWriter(outputStream).use { writer ->
                     writer.write("Fecha,Tipo,Categoría,Monto,Descripción\n")
                     transactions.forEach { tx ->
@@ -99,7 +106,8 @@ class BackupService(private val context: Context, private val database: AmbarDat
                         val type = if (tx.type == "EXPENSE") "Gasto" else "Ingreso"
                         val category = tx.categoryId?.let { categories[it]?.name } ?: "Sin categoría"
                         
-                        writer.write("$date,$type,\"$category\",${tx.amount},\"${tx.description}\"\n")
+                        writer.write(listOf(date.toString(), type, csv(category), tx.amount.toString(), csv(tx.description)).joinToString(","))
+                        writer.write("\n")
                     }
                 }
             }
@@ -108,4 +116,6 @@ class BackupService(private val context: Context, private val database: AmbarDat
             Result.failure(e)
         }
     }
+
+    private fun csv(value: String): String = "\"" + value.replace("\"", "\"\"") + "\""
 }

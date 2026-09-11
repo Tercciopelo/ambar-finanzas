@@ -3,6 +3,7 @@ package com.ambar.finanzas
 import com.ambar.finanzas.utils.CurrencyUtils
 import org.junit.Assert.*
 import org.junit.Test
+import java.time.LocalDate
 
 class CurrencyUtilsTest {
 
@@ -73,6 +74,17 @@ class CurrencyUtilsTest {
     @Test
     fun daysRemainingInMonth_isPositive() {
         val days = CurrencyUtils.daysRemainingInMonth(CurrencyUtils.currentMonthKey())
-        assertTrue(days >= 0)
+        assertTrue(days >= 1)
+    }
+
+    @Test
+    fun daysRemainingInMonth_includesToday() {
+        assertEquals(1, CurrencyUtils.daysRemainingInMonth("2026-09", LocalDate.of(2026, 9, 30)))
+        assertEquals(30, CurrencyUtils.daysRemainingInMonth("2026-09", LocalDate.of(2026, 9, 1)))
+    }
+
+    @Test
+    fun daysRemainingInMonth_forAnotherMonth_returnsWholeMonth() {
+        assertEquals(28, CurrencyUtils.daysRemainingInMonth("2027-02", LocalDate.of(2026, 9, 11)))
     }
 }

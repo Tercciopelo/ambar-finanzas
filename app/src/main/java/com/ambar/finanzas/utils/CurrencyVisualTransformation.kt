@@ -7,38 +7,20 @@ import androidx.compose.ui.text.input.VisualTransformation
 
 class CurrencyVisualTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        val originalText = text.text
-        if (originalText.isEmpty()) {
-            return TransformedText(text, OffsetMapping.Identity)
+        val raw = text.text
+        if (raw.isEmpty() || raw.any { it !in '0'..'9' }) return TransformedText(text, OffsetMapping.Identity)
+        val result = StringBuilder("$ ")
+        val positions = IntArray(raw.length + 1)
+        raw.forEachIndexed { index, char ->
+            if (index > 0 && (raw.length - index) % 3 == 0) result.append('.')
+            positions[index] = result.length
+            result.append(char)
         }
-
-        val formattedText = try {
-            val amount = originalText.toLong()
-            val formatted = String.format("%,d", amount).replace(',', '.')
-            "\$ $formatted"
-        } catch (e: Exception) {
-            originalText
-        }
-
-        val offsetMapping = object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int {
-                if (originalText.isEmpty()) return 0
-                val textSubset = originalText.take(offset)
-                val formattedSubset = try {
-                    if (textSubset.isEmpty()) "" else String.format("%,d", textSubset.toLong()).replace(',', '.')
-                } catch (e: Exception) { textSubset }
-                // Adding 2 for the "$ " prefix
-                return formattedSubset.length + 2
-            }
-
-            override fun transformedToOriginal(offset: Int): Int {
-                if (offset <= 2) return 0
-                val textWithoutPrefix = formattedText.substring(2).take(offset - 2)
-                val dotsCount = textWithoutPrefix.count { it == '.' }
-                return (offset - 2 - dotsCount).coerceIn(0, originalText.length)
-            }
-        }
-
-        return TransformedText(AnnotatedString(formattedText), offsetMapping)
+        positions[raw.length] = result.length
+        val formatted = result.toString()
+        return TransformedText(AnnotatedString(formatted), object : OffsetMapping {
+            override fun originalToTransformed(offset: Int) = positions[offset.coerceIn(0, raw.length)]
+            override fun transformedToOriginal(offset: Int) = formatted.take(offset.coerceIn(0, formatted.length)).count { it in '0'..'9' }
+        })
     }
 }

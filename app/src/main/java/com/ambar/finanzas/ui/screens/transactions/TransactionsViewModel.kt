@@ -1,63 +1,38 @@
 package com.ambar.finanzas.ui.screens.transactions
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.ambar.finanzas.data.local.entity.TransactionEntity
 import com.ambar.finanzas.data.repository.FinanceRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import com.ambar.finanzas.utils.CurrencyUtils
+import kotlinx.coroutines.flow.*
 
-data class TransactionsUiState(
-    val transactions: List<TransactionEntity> = emptyList(),
-    val searchQuery: String = "",
-    val filterType: String = "ALL"
-)
+data class TransactionsUiState(val transactions: List<TransactionEntity> = emptyList(), val searchQuery: String = "",
+    val filterType: String = "ALL", val monthKey: String = CurrencyUtils.currentMonthKey())
 
-class TransactionsViewModel(
-    private val repository: FinanceRepository
-) : ViewModel() {
-
-    private val searchQuery = MutableStateFlow("")
-    private val filterType = MutableStateFlow("ALL")
-
-    val uiState: StateFlow<TransactionsUiState> = combine(
-        repository.getRecentTransactions(100),
-        searchQuery,
-        filterType
-    ) { txs, query, type ->
-        var filtered = txs
-        if (query.isNotBlank()) {
-            filtered = filtered.filter { it.description.contains(query, ignoreCase = true) }
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+class TransactionsViewModel(private val repository: FinanceRepository) : ViewModel() {
+    private val search = MutableStateFlow("")
+    private val type = MutableStateFlow("ALL")
+    private val month = MutableStateFlow(CurrencyUtils.currentMonthKey())
+    val uiState = month.flatMapLatest { mk ->
+        combine(repository.getTransactionsByMonth(mk), search, type) { rows, query, filter ->
+            TransactionsUiState(rows.filter {
+                (it.description.contains(query, true) || it.note.contains(query, true)) &&
+                    when (filter) { "ALL" -> true; "PENDING" -> it.status != "PAID"; else -> it.type == filter }
+            }, query, filter, mk)
         }
-        if (type != "ALL") {
-            filtered = filtered.filter { it.type == type }
-        }
-        TransactionsUiState(
-            transactions = filtered,
-            searchQuery = query,
-            filterType = type
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = TransactionsUiState()
-    )
-
-    fun setSearchQuery(query: String) {
-        searchQuery.value = query
-    }
-
-    fun setFilterType(type: String) {
-        filterType.value = type
-    }
-
-    class Factory(private val repository: FinanceRepository) : androidx.lifecycle.ViewModelProvider.Factory {
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TransactionsUiState())
+    fun setSearchQuery(query: String) { search.value = query }
+    fun setFilterType(filter: String) { type.value = filter }
+    fun previousMonth() { month.value = CurrencyUtils.previousMonthKey(month.value) }
+    fun nextMonth() { month.value = CurrencyUtils.nextMonthKey(month.value) }
+    fun currentMonth() { month.value = CurrencyUtils.currentMonthKey() }
+    suspend fun delete(tx: TransactionEntity) { check(tx.installmentPlanId == null); repository.deleteTransaction(tx.id) }
+    suspend fun markPaid(tx: TransactionEntity) { repository.markPaid(tx.id) }
+    class Factory(private val repository: FinanceRepository) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-            return TransactionsViewModel(repository) as T
-        }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = TransactionsViewModel(repository) as T
     }
 }

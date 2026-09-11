@@ -4,6 +4,12 @@ import com.ambar.finanzas.data.local.dao.*
 import com.ambar.finanzas.data.local.entity.*
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
+import androidx.room.withTransaction
+import com.ambar.finanzas.data.local.database.AmbarDatabase
+import com.ambar.finanzas.utils.CurrencyUtils
+import kotlinx.coroutines.flow.first
+import java.time.LocalDate
+import java.time.ZoneId
 
 class FinanceRepository(
     private val transactionDao: TransactionDao,
@@ -12,7 +18,8 @@ class FinanceRepository(
     private val installmentPlanDao: InstallmentPlanDao,
     private val budgetDao: BudgetDao,
     private val alertDao: AlertDao,
-    private val settingDao: SettingDao
+    private val settingDao: SettingDao,
+    private val database: AmbarDatabase
 ) {
     // ===== TRANSACTIONS =====
 
@@ -50,31 +57,13 @@ class FinanceRepository(
         transactionDao.insert(transaction)
 
     suspend fun addQuickExpense(amount: Long, description: String, categoryId: Long? = null, note: String = "", isRecurring: Boolean = false, isSubscription: Boolean = false): Long {
-        val tx = TransactionEntity(
-            uuid = UUID.randomUUID().toString(),
-            type = "EXPENSE",
-            amount = amount,
-            description = description,
-            categoryId = categoryId,
-            date = System.currentTimeMillis(),
-            monthKey = com.ambar.finanzas.utils.CurrencyUtils.currentMonthKey(),
-            status = "PAID"
-        )
-        return transactionDao.insert(tx)
+        return saveMovement(amount, description, expense = true, date = LocalDate.now(), pending = false,
+            categoryId = categoryId, note = note, repeat = isRecurring, subscription = isSubscription)
     }
 
     suspend fun addQuickIncome(amount: Long, description: String, categoryId: Long? = null, note: String = "", isRecurring: Boolean = false): Long {
-        val tx = TransactionEntity(
-            uuid = UUID.randomUUID().toString(),
-            type = "INCOME",
-            amount = amount,
-            description = description,
-            categoryId = categoryId,
-            date = System.currentTimeMillis(),
-            monthKey = com.ambar.finanzas.utils.CurrencyUtils.currentMonthKey(),
-            status = "PAID"
-        )
-        return transactionDao.insert(tx)
+        return saveMovement(amount, description, expense = false, date = LocalDate.now(), pending = false,
+            categoryId = categoryId, note = note)
     }
 
     suspend fun updateTransaction(transaction: TransactionEntity) =
@@ -84,6 +73,50 @@ class FinanceRepository(
         transactionDao.deleteById(id)
 
     // ===== CATEGORIES =====
+
+    suspend fun saveMovement(amount: Long, description: String, expense: Boolean, date: LocalDate,
+        pending: Boolean, categoryId: Long?, note: String, repeat: Boolean = false,
+        subscription: Boolean = false, existingRuleId: Long? = null): Long = database.withTransaction {
+        require(amount in 1..99_999_999_999L && description.isNotBlank())
+        require(expense || !pending)
+        require(pending || !date.isAfter(LocalDate.now())) { "Un movimiento pagado no puede tener fecha futura." }
+        val month = date.toString().take(7)
+        var ruleId = if (expense) existingRuleId else null
+        if (expense && repeat && ruleId == null) {
+            ruleId = recurringRuleDao.getActive().first().firstOrNull {
+                it.description.equals(description.trim(), true) && it.amount == amount && it.dayOfMonth == date.dayOfMonth
+            }?.id ?: recurringRuleDao.insert(RecurringRuleEntity(uuid = UUID.randomUUID().toString(),
+                description = description.trim(), amount = amount, categoryId = categoryId,
+                dayOfMonth = date.dayOfMonth, startMonth = month, isSubscription = subscription))
+        }
+        transactionDao.insert(TransactionEntity(uuid = UUID.randomUUID().toString(),
+            type = if (expense) "EXPENSE" else "INCOME", amount = amount,
+            description = description.trim(), categoryId = categoryId,
+            date = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(), monthKey = month,
+            status = if (pending) "PENDING" else "PAID", note = note.trim(),
+            isRecurring = ruleId != null, recurringRuleId = ruleId))
+    }
+
+    suspend fun markPaid(id: Long) = database.withTransaction {
+        val tx = transactionDao.getById(id) ?: return@withTransaction
+        if (tx.status != "PAID") {
+            val today = LocalDate.now()
+            transactionDao.update(tx.copy(status = "PAID", date = today.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                monthKey = CurrencyUtils.currentMonthKey(), updatedAt = System.currentTimeMillis()))
+        }
+    }
+
+    suspend fun payInstallment(planId: Long, expectedPaid: Int) = database.withTransaction {
+        val plan = installmentPlanDao.getById(planId) ?: error("Este plan ya no existe.")
+        check(plan.status == "ACTIVE" && plan.currentInstallment == expectedPaid && expectedPaid < plan.totalInstallments)
+        val number = expectedPaid + 1
+        transactionDao.insert(TransactionEntity(uuid = UUID.randomUUID().toString(), type = "EXPENSE",
+            amount = plan.installmentAmount, description = "${plan.name} · cuota $number/${plan.totalInstallments}",
+            date = System.currentTimeMillis(), monthKey = CurrencyUtils.currentMonthKey(), categoryId = plan.categoryId,
+            installmentPlanId = plan.id, installmentNumber = number))
+        installmentPlanDao.update(plan.copy(currentInstallment = number,
+            status = if (number == plan.totalInstallments) "COMPLETED" else "ACTIVE", updatedAt = System.currentTimeMillis()))
+    }
 
     fun getCategories(): Flow<List<CategoryEntity>> =
         categoryDao.getAll()

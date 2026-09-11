@@ -75,6 +75,8 @@ class HomeViewModel(private val repository: FinanceRepository) : ViewModel() {
         _monthKey.value = CurrencyUtils.nextMonthKey(_monthKey.value)
     }
 
+    fun currentMonth() { _monthKey.value = CurrencyUtils.currentMonthKey() }
+
     class Factory(private val repository: FinanceRepository) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

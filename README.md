@@ -1,36 +1,29 @@
 # Ámbar Finanzas
 
-Ámbar Finanzas es una aplicación Android de finanzas personales diseñada específicamente para ser **Simple por fuera, Robusta por dentro**. Está construida para mantener la privacidad absoluta de los datos, operando de manera 100% offline sin servicios en la nube.
+Aplicación Android de finanzas personales creada para llevar ingresos, gastos, pagos pendientes y compras en cuotas de forma simple. Funciona completamente offline: no usa Firebase, cuentas, analítica ni servicios externos.
 
-## Funcionalidades
-- **Registro Rápido:** Ingresa gastos e ingresos en segundos.
-- **Planificación:** Visualiza qué puedes gastar hoy, tus próximos pagos y cuotas.
-- **Privacidad:** Datos almacenados localmente. Modo privado para ocultar saldos y soporte para biometría.
-- **Backups:** Exporta e importa tus datos en formato JSON. Exporta movimientos a CSV.
-- **Gráficos y Alertas:** Dashboards atractivos con reportes categorizados y notificaciones locales.
+## Funciones principales
 
-## Privacidad y Arquitectura
-- **100% Offline:** Sin Firebase, sin Supabase, sin analíticas ni trackers.
-- **Arquitectura:** MVI / MVVM con Jetpack Compose y Room (SQLite).
+- Inicio con balance mensual, pagos pendientes y referencia diaria.
+- Registro rápido de gastos e ingresos, con fecha, categoría y nota opcionales.
+- Gastos habituales reutilizables, sin crear cobros automáticos.
+- Compras en cuotas con saldo restante y registro de cada pago como gasto.
+- Búsqueda y filtros de movimientos por mes y estado.
+- Tema claro, oscuro o del sistema, y modo privado para ocultar montos.
+- Respaldo y restauración en JSON, además de exportación CSV.
 
-## Cómo compilar y testear
-El proyecto utiliza Gradle. Puedes compilarlo localmente:
-```bash
-./gradlew clean
-./gradlew test
-./gradlew assembleDebug
-```
+## Privacidad y arquitectura
 
-## GitHub Actions y APK
-El repositorio está configurado con **GitHub Actions**. 
-- Cada push a `main` ejecuta pruebas unitarias y genera un APK de depuración (`Ambar-Finanzas-APK`).
-- Puedes descargar este artefacto directamente desde la pestaña **Actions** en GitHub.
+- Datos guardados únicamente en Room SQLite en el dispositivo.
+- Interfaz Jetpack Compose con Material 3.
+- MVVM con `ViewModel`, `StateFlow` y `FinanceRepository`.
 
-## Release Firmada
-Existe un workflow preparado `release-apk.yml`. Para generar un APK firmado de producción:
-1. Configura los secretos en tu repositorio de GitHub: `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
-2. Lanza el workflow manualmente (workflow_dispatch) o crea un Tag `v*`.
+## Compilación y pruebas
 
-## Cómo hacer respaldo y restaurar
-- **Respaldo:** Ve a Configuración -> Exportar Respaldo. Se generará un JSON en tus documentos.
-- **Restaurar:** Ve a Configuración -> Importar Respaldo y selecciona el archivo JSON. Se reemplazarán los datos.
+Este repositorio se valida mediante GitHub Actions. Cada envío a `main` ejecuta las pruebas unitarias, compila el APK de depuración y publica el artefacto `Ambar-Finanzas-APK` en la ejecución correspondiente.
+
+El workflow de versión firmada se ejecuta manualmente o al crear una etiqueta `v*`, siempre que los secretos de firma estén configurados en GitHub.
+
+## Respaldo
+
+En **Ajustes > Tus datos** se puede guardar un respaldo JSON, restaurar uno existente o exportar los movimientos a CSV. Restaurar reemplaza el contenido local actual, por lo que la aplicación solicita confirmación antes de elegir el archivo.
