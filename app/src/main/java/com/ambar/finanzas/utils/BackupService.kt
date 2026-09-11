@@ -82,4 +82,29 @@ class BackupService(private val context: Context, private val database: AmbarDat
             Result.failure(e)
         }
     }
+
+    suspend fun exportCSV(uri: Uri): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            val transactions = database.transactionDao().getAllSync()
+            val categories = database.categoryDao().getAllSync().associateBy { it.id }
+
+            context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                OutputStreamWriter(outputStream).use { writer ->
+                    writer.write("Fecha,Tipo,Categoría,Monto,Descripción\n")
+                    transactions.forEach { tx ->
+                        val date = java.time.Instant.ofEpochMilli(tx.date)
+                            .atZone(java.time.ZoneId.systemDefault())
+                            .toLocalDate()
+                        val type = if (tx.type == "EXPENSE") "Gasto" else "Ingreso"
+                        val category = tx.categoryId?.let { categories[it]?.name } ?: "Sin categoría"
+                        
+                        writer.write("$date,$type,\"$category\",${tx.amount},\"${tx.description}\"\n")
+                    }
+                }
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

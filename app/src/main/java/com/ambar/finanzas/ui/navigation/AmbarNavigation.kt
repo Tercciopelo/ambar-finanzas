@@ -29,10 +29,13 @@ import com.ambar.finanzas.ui.screens.transactions.TransactionsScreen
 import com.ambar.finanzas.ui.screens.transactions.TransactionsViewModel
 import com.ambar.finanzas.ui.components.QuickAddSheet
 
+import com.ambar.finanzas.ui.screens.planificacion.PlanificacionScreen
+
 enum class AmbarScreen(val route: String, val label: String, val icon: ImageVector) {
     HOME("home", "Inicio", Icons.Default.Home),
     TRANSACTIONS("transactions", "Movimientos", Icons.Default.Receipt),
     INSTALLMENTS("installments", "Cuotas", Icons.Default.CreditCard),
+    PLANIFICACION("planificacion", "Plan", Icons.Default.MoreHoriz),
     SETTINGS("settings", "Ajustes", Icons.Default.MoreHoriz)
 }
 
@@ -98,6 +101,9 @@ fun AmbarNavigation(repository: FinanceRepository) {
             composable(AmbarScreen.SETTINGS.route) {
                 val vm: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory(repository))
                 SettingsScreen(viewModel = vm)
+            }
+            composable(AmbarScreen.PLANIFICACION.route) {
+                PlanificacionScreen()
             }
         }
     }
