@@ -53,16 +53,17 @@ interface TransactionDao {
 
     @Query("DELETE FROM transactions WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    @Query("SELECT * FROM transactions")
+    fun getAllSync(): List<TransactionEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(transactions: List<TransactionEntity>)
+
+    @Query("DELETE FROM transactions")
+    fun deleteAll()
 }
 
 data class CategoryTotal(val categoryId: Long?, val total: Long)
 data class MonthTotal(val monthKey: String, val total: Long)
 data class FrequentItem(val description: String, val categoryId: Long?, val freq: Int)
-    @Query("SELECT * FROM transactions")
-    fun getAllSync(): List<TransactionEntity>
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(transactions: List<TransactionEntity>)
-    @Query("DELETE FROM transactions")
-    fun deleteAll()
-
-}
