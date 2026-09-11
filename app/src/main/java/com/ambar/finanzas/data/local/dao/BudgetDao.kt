@@ -18,4 +18,9 @@ interface BudgetDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategoryBudget(budget: CategoryBudgetEntity)
+@Query("SELECT * FROM budgets LIMIT 1")
+    fun getBudgetSync(): BudgetEntity?
+    @Query("DELETE FROM budgets")
+    fun deleteAll()
+
 }

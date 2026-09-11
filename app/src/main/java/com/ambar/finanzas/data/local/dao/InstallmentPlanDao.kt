@@ -23,4 +23,11 @@ interface InstallmentPlanDao {
 
     @Query("UPDATE installment_plans SET status = 'COMPLETED' WHERE id = :id")
     suspend fun markCompleted(id: Long)
+@Query("SELECT * FROM installment_plans")
+    fun getAllSync(): List<InstallmentPlanEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(plans: List<InstallmentPlanEntity>)
+    @Query("DELETE FROM installment_plans")
+    fun deleteAll()
+
 }

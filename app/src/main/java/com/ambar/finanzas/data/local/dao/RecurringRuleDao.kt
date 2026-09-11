@@ -23,4 +23,11 @@ interface RecurringRuleDao {
 
     @Query("UPDATE recurring_rules SET active = :active WHERE id = :id")
     suspend fun setActive(id: Long, active: Boolean)
+@Query("SELECT * FROM recurring_rules")
+    fun getAllSync(): List<RecurringRuleEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(rules: List<RecurringRuleEntity>)
+    @Query("DELETE FROM recurring_rules")
+    fun deleteAll()
+
 }

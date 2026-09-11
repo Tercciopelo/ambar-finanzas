@@ -14,4 +14,9 @@ interface SettingDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun set(setting: SettingEntity)
+@Query("SELECT * FROM settings")
+    fun getAllSync(): List<SettingEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun setSync(setting: SettingEntity)
+
 }

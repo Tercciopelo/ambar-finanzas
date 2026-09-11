@@ -22,7 +22,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun QuickAddSheet(
     repository: FinanceRepository,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onShowSnackbar: (String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
@@ -157,6 +158,7 @@ fun QuickAddSheet(
                             } else {
                                 repository.addQuickIncome(amount, description.trim())
                             }
+                            onShowSnackbar("Guardado ✓")
                             onDismiss()
                         } catch (_: Exception) {
                             isSaving = false
