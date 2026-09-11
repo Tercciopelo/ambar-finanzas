@@ -15,7 +15,7 @@ class CurrencyVisualTransformation : VisualTransformation {
         val formattedText = try {
             val amount = originalText.toLong()
             val formatted = String.format("%,d", amount).replace(',', '.')
-            "$ formatted"
+            "\$ $formatted"
         } catch (e: Exception) {
             originalText
         }

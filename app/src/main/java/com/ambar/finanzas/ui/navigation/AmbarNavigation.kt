@@ -35,8 +35,8 @@ enum class AmbarScreen(val route: String, val label: String, val icon: ImageVect
     HOME("home", "Inicio", Icons.Default.Home),
     TRANSACTIONS("transactions", "Movimientos", Icons.Default.Receipt),
     INSTALLMENTS("installments", "Cuotas", Icons.Default.CreditCard),
-    PLANIFICACION("planificacion", "Plan", Icons.Default.MoreHoriz),
-    SETTINGS("settings", "Ajustes", Icons.Default.MoreHoriz)
+    PLANIFICACION("planificacion", "Plan", Icons.Default.DateRange),
+    SETTINGS("settings", "Ajustes", Icons.Default.Settings)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
