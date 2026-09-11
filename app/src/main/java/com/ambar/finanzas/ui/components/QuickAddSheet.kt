@@ -81,16 +81,16 @@ fun QuickAddSheet(
             OutlinedTextField(
                 value = amountText,
                 onValueChange = { newVal ->
-                    if (newVal.all { c -> c.isDigit() }) amountText = newVal
+                    if (newVal.all { c -> c.isDigit() } && newVal.length <= 11) amountText = newVal
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
-                prefix = { Text("$") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                textStyle = MaterialTheme.typography.headlineMedium
+                visualTransformation = com.ambar.finanzas.utils.CurrencyVisualTransformation(),
+                textStyle = MaterialTheme.typography.headlineMedium,
+                shape = RoundedCornerShape(12.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

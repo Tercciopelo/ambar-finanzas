@@ -57,8 +57,9 @@ fun AmbarNavigation(repository: FinanceRepository) {
                 AmbarScreen.entries.forEach { screen ->
                     NavigationBarItem(
                         icon = { Icon(screen.icon, contentDescription = screen.label) },
-                        label = { Text(screen.label) },
+                        label = { Text(screen.label, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis) },
                         selected = currentRoute == screen.route,
+                        alwaysShowLabel = false,
                         onClick = {
                             navController.navigate(screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
