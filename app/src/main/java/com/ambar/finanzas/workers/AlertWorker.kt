@@ -20,7 +20,7 @@ class AlertWorker(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        val database = AmbarDatabase.getDatabase(applicationContext)
+        val database = AmbarDatabase.getInstance(applicationContext)
         val repository = FinanceRepository(
             database.transactionDao(), database.categoryDao(),
             database.recurringRuleDao(), database.installmentPlanDao(),
