@@ -28,22 +28,25 @@ class HomeViewModel(private val repository: FinanceRepository) : ViewModel() {
     private val _monthKey = MutableStateFlow(CurrencyUtils.currentMonthKey())
 
     val uiState: StateFlow<HomeUiState> = _monthKey.flatMapLatest { mk ->
-        combine(
+        val financials = combine(
             repository.getMonthlyIncome(mk),
             repository.getMonthlyExpenses(mk),
-            repository.getMonthlyPending(mk),
+            repository.getMonthlyPending(mk)
+        ) { income, expenses, pending ->
+            Triple(income ?: 0L, expenses ?: 0L, pending ?: 0L)
+        }
+
+        val details = combine(
             repository.getPendingPayments(mk),
             repository.getExpensesByCategory(mk),
             repository.getUnreadAlertCount()
-        ) { values ->
-            val income = (values[0] as? Long) ?: 0L
-            val expenses = (values[1] as? Long) ?: 0L
-            val pending = (values[2] as? Long) ?: 0L
-            @Suppress("UNCHECKED_CAST")
-            val pendingList = values[3] as List<TransactionEntity>
-            @Suppress("UNCHECKED_CAST")
-            val byCat = values[4] as List<CategoryTotal>
-            val alerts = values[5] as Int
+        ) { payments, byCat, alerts ->
+            Triple(payments, byCat, alerts)
+        }
+
+        combine(financials, details) { fin, det ->
+            val (income, expenses, pending) = fin
+            val (pendingList, byCat, alerts) = det
 
             val available = income - expenses - pending
             val daysLeft = CurrencyUtils.daysRemainingInMonth(mk).coerceAtLeast(1)
