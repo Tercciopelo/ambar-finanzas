@@ -24,7 +24,7 @@ import com.ambar.finanzas.data.local.entity.*
         TransactionTagCrossRef::class
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class AmbarDatabase : RoomDatabase() {
 
