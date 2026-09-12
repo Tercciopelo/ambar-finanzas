@@ -19,6 +19,7 @@ class AmbarApp : Application() {
             recurringRuleDao = database.recurringRuleDao(),
             installmentPlanDao = database.installmentPlanDao(),
             budgetDao = database.budgetDao(),
+            savingsGoalDao = database.savingsGoalDao(),
             alertDao = database.alertDao(),
             settingDao = database.settingDao(),
             database = database

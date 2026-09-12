@@ -22,9 +22,15 @@ class AlertWorker(
     override suspend fun doWork(): Result {
         val database = AmbarDatabase.getInstance(applicationContext)
         val repository = FinanceRepository(
-            database.transactionDao(), database.categoryDao(),
-            database.recurringRuleDao(), database.installmentPlanDao(),
-            database.budgetDao(), database.alertDao(), database.settingDao(), database
+            transactionDao = database.transactionDao(),
+            categoryDao = database.categoryDao(),
+            recurringRuleDao = database.recurringRuleDao(),
+            installmentPlanDao = database.installmentPlanDao(),
+            budgetDao = database.budgetDao(),
+            savingsGoalDao = database.savingsGoalDao(),
+            alertDao = database.alertDao(),
+            settingDao = database.settingDao(),
+            database = database
         )
 
         val today = LocalDate.now()

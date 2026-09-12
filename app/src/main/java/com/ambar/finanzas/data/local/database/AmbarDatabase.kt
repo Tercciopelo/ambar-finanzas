@@ -33,6 +33,7 @@ abstract class AmbarDatabase : RoomDatabase() {
     abstract fun recurringRuleDao(): RecurringRuleDao
     abstract fun installmentPlanDao(): InstallmentPlanDao
     abstract fun budgetDao(): BudgetDao
+    abstract fun savingsGoalDao(): SavingsGoalDao
     abstract fun alertDao(): AlertDao
     abstract fun settingDao(): SettingDao
 

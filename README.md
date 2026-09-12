@@ -8,6 +8,8 @@ Aplicación Android de finanzas personales creada para llevar ingresos, gastos, 
 - Registro rápido de gastos e ingresos, con fecha, categoría y nota opcionales.
 - Gastos habituales reutilizables, sin crear cobros automáticos.
 - Compras en cuotas con saldo restante y registro de cada pago como gasto.
+- Planificación con capacidad mensual de ahorro según ingresos, gastos, pendientes y deudas activas.
+- Metas de ahorro con fecha objetivo, aporte mensual sugerido, seguimiento de avance y aportes.
 - Búsqueda y filtros de movimientos por mes y estado.
 - Tema claro, oscuro o del sistema, y modo privado para ocultar montos.
 - Respaldo y restauración en JSON, además de exportación CSV.

@@ -17,6 +17,7 @@ class FinanceRepository(
     private val recurringRuleDao: RecurringRuleDao,
     private val installmentPlanDao: InstallmentPlanDao,
     private val budgetDao: BudgetDao,
+    private val savingsGoalDao: SavingsGoalDao,
     private val alertDao: AlertDao,
     private val settingDao: SettingDao,
     private val database: AmbarDatabase
@@ -181,6 +182,31 @@ class FinanceRepository(
 
     suspend fun setBudget(budget: BudgetEntity) =
         budgetDao.insertBudget(budget)
+
+    // ===== SAVINGS GOALS =====
+
+    fun getSavingsGoals(): Flow<List<SavingsGoalEntity>> = savingsGoalDao.getAll()
+
+    fun getSavingContributionsBetween(start: Long, end: Long): Flow<Long?> =
+        savingsGoalDao.getContributionsBetween(start, end)
+
+    suspend fun addSavingsGoal(name: String, targetAmount: Long, targetDate: Long): Long {
+        require(name.isNotBlank() && targetAmount in 1..99_999_999_999L)
+        return savingsGoalDao.insert(SavingsGoalEntity(
+            name = name.trim(), targetAmount = targetAmount, targetDate = targetDate
+        ))
+    }
+
+    suspend fun addSavingContribution(goalId: Long, amount: Long) = database.withTransaction {
+        val goal = savingsGoalDao.getById(goalId) ?: error("Esta meta ya no existe.")
+        val remaining = (goal.targetAmount - goal.savedAmount).coerceAtLeast(0L)
+        require(!goal.completed && amount in 1..remaining) { "El aporte debe estar dentro del monto pendiente." }
+        savingsGoalDao.insertContribution(SavingContributionEntity(goalId = goalId, amount = amount))
+        val newSaved = goal.savedAmount + amount
+        savingsGoalDao.update(goal.copy(savedAmount = newSaved, completed = newSaved >= goal.targetAmount))
+    }
+
+    suspend fun deleteSavingsGoal(goal: SavingsGoalEntity) = savingsGoalDao.delete(goal)
 
     // ===== ALERTS =====
 

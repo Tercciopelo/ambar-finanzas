@@ -19,7 +19,9 @@ data class BackupData(
     val recurringRules: List<RecurringRuleEntity>,
     val installmentPlans: List<InstallmentPlanEntity>,
     val budgets: List<BudgetEntity>,
-    val settings: List<SettingEntity>
+    val settings: List<SettingEntity>,
+    val savingsGoals: List<SavingsGoalEntity>? = emptyList(),
+    val savingContributions: List<SavingContributionEntity>? = emptyList()
 )
 
 class BackupService(private val context: Context, private val database: AmbarDatabase) {
@@ -34,7 +36,9 @@ class BackupService(private val context: Context, private val database: AmbarDat
                 recurringRules = database.recurringRuleDao().getAllSync(),
                 installmentPlans = database.installmentPlanDao().getAllSync(),
                 budgets = listOfNotNull(database.budgetDao().getBudgetSync()),
-                settings = database.settingDao().getAllSync()
+                settings = database.settingDao().getAllSync(),
+                savingsGoals = database.savingsGoalDao().getAllSync(),
+                savingContributions = database.savingsGoalDao().getAllContributionsSync()
             )
 
             val json = gson.toJson(data)
@@ -70,6 +74,8 @@ class BackupService(private val context: Context, private val database: AmbarDat
                 database.categoryDao().deleteAll()
                 database.recurringRuleDao().deleteAll()
                 database.installmentPlanDao().deleteAll()
+                database.savingsGoalDao().deleteAllContributions()
+                database.savingsGoalDao().deleteAll()
                 database.budgetDao().deleteAll()
                 database.settingDao().deleteAll()
                 
@@ -78,6 +84,10 @@ class BackupService(private val context: Context, private val database: AmbarDat
                 if (data.transactions.isNotEmpty()) database.transactionDao().insertAll(data.transactions)
                 if (data.recurringRules.isNotEmpty()) database.recurringRuleDao().insertAll(data.recurringRules)
                 if (data.installmentPlans.isNotEmpty()) database.installmentPlanDao().insertAll(data.installmentPlans)
+                if (data.savingsGoals.orEmpty().isNotEmpty()) database.savingsGoalDao().insertAll(data.savingsGoals.orEmpty())
+                if (data.savingContributions.orEmpty().isNotEmpty()) {
+                    database.savingsGoalDao().insertAllContributions(data.savingContributions.orEmpty())
+                }
                 if (data.budgets.isNotEmpty()) database.budgetDao().insertBudget(data.budgets.first())
                 if (data.settings.isNotEmpty()) {
                     data.settings.forEach { database.settingDao().setSync(it) }
